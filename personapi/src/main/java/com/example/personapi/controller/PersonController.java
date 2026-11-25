@@ -1,5 +1,6 @@
 package com.example.personapi.controller;
 
+import com.example.personapi.entity.Passport;
 import com.example.personapi.entity.Person;
 import com.example.personapi.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,14 @@ public class PersonController {
     // Return all persons
     @GetMapping("/getAllPersons")
     public List<Person> getAllPersons() {
+
         return personService.getAllPersons();
     }
 
     // Return a person by ID
     @GetMapping("/getPersonById/{id}")
     public Person getPersonById(@PathVariable Long id) {
+
         return personService.getPersonByID(id);
     }
 
@@ -43,14 +46,22 @@ public class PersonController {
     // Delete a person by ID
     @DeleteMapping("/deletePersonById/{id}")
     public void deletePersonById(@PathVariable Long id) {
+
         personService.deletePersonById(id);
     }
 
     // Add a person using a database transaction
     @PostMapping("/addPersonWithTransaction")
     public void addPersonwithTransaction(@RequestBody Person person) {
+
         personService.addPersonWithTransaction(person);
     }
 
+    // Create a person with an associated passport
+    @PostMapping("/addPersonWithPassport")
+    public Person addPersonWithPassport(@RequestBody Person person) {
+        Passport passport = person.getPassport();
 
+        return personService.addPersonWithPassport(person, passport);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.personapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 // Hibernate will map this Java class to a database table.
@@ -16,6 +17,10 @@ public class Person {
     private String name;
 
     private int age;
+
+    @OneToOne(mappedBy = "person",  cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Passport passport;
 
     // No-argument constructor (a constructor without parameters).
     // JPA/Hibernate requires it to create an empty Person object when retrieving data from the database.
@@ -54,5 +59,18 @@ public class Person {
     // Updates the person's age.
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Passport getPassport() {
+        return passport;
+    }
+    public void setPassport(Passport passport) {
+        this.passport = passport;
+    }
+
+    // Link the person and passport on both sides of the relationship
+    public void assignPassport(Passport passport) {
+        this.passport = passport;
+        passport.setPerson(this);
     }
 }

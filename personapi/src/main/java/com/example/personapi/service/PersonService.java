@@ -1,6 +1,8 @@
 package com.example.personapi.service;
 
+import com.example.personapi.entity.Passport;
 import com.example.personapi.entity.Person;
+import com.example.personapi.repository.PassportRepository;
 import com.example.personapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,9 @@ public class PersonService {
     // Inject PersonRepository to access the database.
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private PassportRepository passportRepository;
 
     // Find all persons from the database
     public List<Person> getAllPersons() {
@@ -66,5 +71,12 @@ public class PersonService {
         return personSaved;
     }
 
+    public Person addPersonWithPassport(Person person, Passport passport) {
+        // Link the person & passport together
+        person.assignPassport(passport);
+
+        // Save the person
+        return personRepository.save(person);
+    }
 
 }
